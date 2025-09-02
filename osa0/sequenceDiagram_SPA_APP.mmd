@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant Client
+    participant Server
+
+    Client->>Server: GET /exampleapp/spa
+    Server-->>Client: HTML Response
+    Client->>Server: GET /exampleapp/main.css
+    Server-->>Client: CSS Response
+    Client->>Server: GET /exampleapp/spa.js
+    Server-->>Client: JS Response
+    Client->>Server: GET /exampleapp/data.json
+    Server-->>Client: JSON Response
