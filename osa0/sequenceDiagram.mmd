@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant Client
+    participant Server
+
+    Client->>Server: GET /exampleapp/notes
+    Server-->>Client: HTML Response
+    Client->>Server: GET /exampleapp/main.css
+    Server-->>Client: CSS Response
+    Client->>Server: GET /exampleapp/main.js
+    Server-->>Client: JS Response
+    Client->>Server: GET /exampleapp/data.json
+    Server-->>Client: JSON Response
+
+    Client->>Server: POST /exampleapp/new_note (note=moikku)
+    Server-->>Client: 302 Redirect to /exampleapp/notes
+    Client->>Server: GET /exampleapp/notes
+    Server-->>Client: HTML Response
+    Client->>Server: GET /exampleapp/main.css
+    Server-->>Client: CSS Response
+    Client->>Server: GET /exampleapp/main.js
+    Server-->>Client: JS Response
+    Client->>Server: GET /exampleapp/data.json
+    Server-->>Client: JSON Response
