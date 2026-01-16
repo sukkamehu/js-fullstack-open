@@ -8,6 +8,8 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
 app.use(cors())
 app.use(express.json())
 
+const BASE_PATH = '/fullstackopen/puhelinluettelo'
+
 let persons = [
     {
         "name": "Dan Abramov",
@@ -61,10 +63,10 @@ let persons = [
     }
 ]
 
-app.get('/api/persons', (req, res) => res.json(persons));
-app.get('/info', (req, res) => res.send(`<p>Phonebook has info for ${persons.length} people</p><p>${new Date()}</p>`));
-app.get('/api/persons', (req, res) => res.json(persons));
-app.get('/api/persons/:id', (req, res) => {
+app.get(`${BASE_PATH}/api/persons`, (req, res) => res.json(persons));
+app.get(`${BASE_PATH}/info`, (req, res) => res.send(`<p>Phonebook has info for ${persons.length} people</p><p>${new Date()}</p>`));
+app.get(`${BASE_PATH}/api/persons`, (req, res) => res.json(persons));
+app.get(`${BASE_PATH}/api/persons/:id`, (req, res) => {
     const id = Number(req.params.id)
     const person = persons.find(person => person.id === id)
     if (person) {
@@ -74,18 +76,18 @@ app.get('/api/persons/:id', (req, res) => {
     }
 })
 
-app.use(express.static('dist'))
-app.get('/', (req, res) => express.static('dist'));
+// Serve static files at the base path
+app.use(BASE_PATH, express.static('dist'))
+app.use("/", express.static('dist'))
 
-
-app.delete('/api/persons/:id', (req, res) => {
+app.delete(`${BASE_PATH}/api/persons/:id`, (req, res) => {
     const id = Number(req.params.id)
     persons = persons.filter(person => person.id !== id)
     res.status(204).end()
 });
 
 
-app.post('/api/persons', morgan(':method :url :status :res[content-length] - :response-time ms :body'), (req, res) => {
+app.post(`${BASE_PATH}/api/persons`, morgan(':method :url :status :res[content-length] - :response-time ms :body'), (req, res) => {
     const body = req.body
     if (!body.name || !body.number) {
         return res.status(400).json({
