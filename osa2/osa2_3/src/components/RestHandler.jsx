@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl =  '/fullstackopen/puhelinluettelo/api/persons'
+const baseUrl =  'http://localhost:8888/fullstackopen/puhelinluettelo/api/notes'
 
 const getAll = () => {
     const request = axios.get(baseUrl)
