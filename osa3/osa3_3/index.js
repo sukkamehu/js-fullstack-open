@@ -1,15 +1,18 @@
 const express = require('express')
 const app = express()
-const morgan = require('morgan')
 const cors = require('cors')
 const Note = require('./models/note')
+const logger = require('./utils/logger')
+const { unknownEndpoint, errorHandler } = require('./utils/middleware')
+const { BASE_PATH, PORT } = require('./utils/config')
 
-morgan.token('body', (req) => JSON.stringify(req.body))
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+app.use(logger)
 app.use(cors())
 app.use(express.json())
 
-const BASE_PATH = '/fullstackopen/puhelinluettelo'
+// Serve static files at the base path
+app.use(BASE_PATH, express.static('dist'))
+app.use("/", express.static('dist'))
 
 app.get(`${BASE_PATH}/api/notes/:id`, (request, response, next) => {
   Note.findById(request.params.id)
@@ -45,10 +48,6 @@ app.patch(`${BASE_PATH}/api/notes/:id`, (request, response, next) => {
 })
 
 
-// Serve static files at the base path
-app.use(BASE_PATH, express.static('dist'))
-app.use("/", express.static('dist'))
-
 app.delete(`${BASE_PATH}/api/notes/:id`, (request, response, next) => {
   Note.findByIdAndDelete(request.params.id)
     .then(result => {
@@ -58,7 +57,7 @@ app.delete(`${BASE_PATH}/api/notes/:id`, (request, response, next) => {
 })
 
 
-app.post(`${BASE_PATH}/api/notes`, morgan(':method :url :status :res[content-length] - :response-time ms :body'), (request, response, next) => {
+app.post(`${BASE_PATH}/api/notes`, logger, (request, response, next) => {
   const body = request.body
 
   if (!body.name || !body.number) {
@@ -75,27 +74,8 @@ app.post(`${BASE_PATH}/api/notes`, morgan(':method :url :status :res[content-len
   }).catch(error => next(error))
 })
 
-const unknownEndpoint = (request, response) => {
-  response.status(404).json({ error: 'unknown endpoint' })
-}
-
 app.use(unknownEndpoint)
-
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
-
-  if (error.name === 'CastError') {
-    return response.status(400).json({ error: 'malformatted id' })
-  } else if (error.name === 'ValidationError') {
-    return response.status(400).json({ error: error.message })
-  }
-
-  next(error)
-}
-
-// tämä tulee kaikkien muiden middlewarejen ja routejen rekisteröinnin jälkeen!
 app.use(errorHandler)
 
-const PORT = process.env.PORT || 8888
 app.listen(PORT)
 console.log(`Server running on port ${PORT}`)

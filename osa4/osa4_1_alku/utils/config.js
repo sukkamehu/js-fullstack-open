@@ -1,0 +1,9 @@
+const BASE_PATH = '/fullstackopen/puhelinluettelo'
+const PORT = process.env.PORT || 8888
+const MONGODB_URI = process.env.MONGODB_URI
+
+module.exports = {
+  BASE_PATH,
+  PORT,
+  MONGODB_URI
+}

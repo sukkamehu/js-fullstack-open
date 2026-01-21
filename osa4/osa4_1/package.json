@@ -1,0 +1,15 @@
+{
+    "name": "part4",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "node index --watch",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "mongodb": "^7.0.0",
+    "mongoose": "^9.1.4",
+    "morgan": "^1.10.1"
+  }
+}
