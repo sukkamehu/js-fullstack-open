@@ -1,15 +1,22 @@
 {
     "name": "part4",
-  "private": true,
-  "version": "0.0.0",
-  "scripts": {
-    "dev": "node index --watch",
-    "test": "node --test"
-  },
-  "dependencies": {
-    "dotenv": "^17.2.3",
-    "mongodb": "^7.0.0",
-    "mongoose": "^9.1.4",
-    "morgan": "^1.10.1"
-  }
+    "private": true,
+    "version": "0.0.0",
+    "scripts": {
+        "start": "NODE_ENV=production node index.js",
+        "dev": "NODE_ENV=development node --watch index.js",
+        "test": "NODE_ENV=test node --test"
+    },
+    "dependencies": {
+        "bcrypt": "^6.0.0",
+        "dotenv": "^17.2.3",
+        "express-async-errors": "^3.1.1",
+        "jsonwebtoken": "^9.0.3",
+        "mongodb": "^7.0.0",
+        "mongoose": "^9.1.4",
+        "morgan": "^1.10.1"
+    },
+    "devDependencies": {
+        "supertest": "^7.2.2"
+    }
 }

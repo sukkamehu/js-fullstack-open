@@ -1,17 +1,17 @@
 const notesRouter = require('express').Router()
-const Blog = require('../models/blog')
+const Note = require('../models/note')
 
 notesRouter.get('/', (request, response) => {
-  Blog.find({}).then((blogs) => {
-    response.json(blogs)
+  Note.find({}).then((notes) => {
+    response.json(notes)
   })
 })
 
 notesRouter.get('/:id', (request, response, next) => {
-  Blog.findById(request.params.id)
-    .then(blog => {
-      if (blog) {
-        response.json(blog)
+  Note.findById(request.params.id)
+    .then(note => {
+      if (note) {
+        response.json(note)
       } else {
         response.status(404).end()
       }
@@ -20,21 +20,19 @@ notesRouter.get('/:id', (request, response, next) => {
 })
 
 notesRouter.post('/', (request, response, next) => {
-  const blog = new Blog(request.body)
+  const note = new Note(request.body)
 
-  blog.save().then((result) => {
+  note.save().then((result) => {
     response.status(201).json(result)
   }).catch((error) => next(error))
 })
 
 notesRouter.delete('/:id', (request, response, next) => {
-  Blog.findByIdAndDelete(request.params.id)
+  Note.findByIdAndDelete(request.params.id)
     .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
 })
-
-
 
 module.exports = notesRouter
