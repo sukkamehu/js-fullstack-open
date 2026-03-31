@@ -6,10 +6,15 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/fullstackopen/puhelinluettelo/api': {
-        target: 'http://192.168.0.179:8888',
+      '/api': {
+        target: 'http://localhost:3003',
         changeOrigin: true
       }
     }
+  },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './testSetup.js', 
   }
 })
